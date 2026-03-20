@@ -251,7 +251,7 @@ notification:
     generic_webhook:
       webhook_url: "https://discord.com/api/webhooks/1484120918384054323/1ilK51ykr_H5azcQLxuYVNBUZQOR7Ra6IJ_3JWkJlC-t9eXtIYtXeGshGNOUSA0cQCii"
       payload_template: '{"content": "{content}"}'
-      max_batch_size: 50
+      max_batch_size: 10
 
 
 # ===============================================================
