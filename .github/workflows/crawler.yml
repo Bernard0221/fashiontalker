@@ -44,7 +44,7 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: read
+  contents: write
   actions: write
 
 jobs:
@@ -167,3 +167,31 @@ jobs:
           S3_REGION: ${{ secrets.S3_REGION }}
           GITHUB_ACTIONS: true
         run: python -m trendradar
+
+      # --------------------------------------------------------------------------------
+      # 📤 PUSH DATA BACK TO REPO
+      # --------------------------------------------------------------------------------
+      - name: Commit and push generated data
+        if: success()
+        run: |
+          echo "📤 Pushing generated data back to repo..."
+          
+          # Configure git
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+          
+          # Add output directory
+          git add output/
+          
+          # Check if there are changes
+          if git diff --staged --quiet; then
+            echo "✅ No changes to commit"
+          else
+            # Commit with timestamp
+            TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
+            git commit -m "📊 Auto-update: News data ($TIMESTAMP)"
+            
+            # Push back to repo
+            git push
+            echo "✅ Data pushed successfully!"
+          fi
